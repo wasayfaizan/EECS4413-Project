@@ -1,4 +1,4 @@
-package model;
+package com.example.solemate.model;
 
 import java.util.List;
 

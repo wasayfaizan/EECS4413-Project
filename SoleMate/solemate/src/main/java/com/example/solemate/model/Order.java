@@ -1,4 +1,4 @@
-package model;
+package com.example.solemate.model;
 
 import java.util.List;
 
@@ -8,19 +8,17 @@ public class Order {
     private String status; // E.g., Pending, Shipped, Delivered
     private double totalAmount;
     private String orderDate;
-    private String orderStatus; // E.g., Pending, Shipped, Delivered
 
     // Default constructor
     public Order() {}
 
     // Parameterized constructor
-    public Order(int id, int userId, String status, double totalAmount, String orderDate, String orderStatus) {
+    public Order(int id, int userId, String status, double totalAmount, String orderDate) {
         this.id = id;
         this.userId = userId;
         this.status = status;
         this.totalAmount = totalAmount;
         this.orderDate = orderDate;
-        this.orderStatus = orderStatus;
     }
 
     // Getters and Setters
@@ -64,16 +62,9 @@ public class Order {
         this.orderDate = orderDate;
     }
 
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
 
     @Override
     public String toString() {
-        return "Order{id=" + id + ", userId=" + userId + ", status='" + status + "', totalAmount=" + totalAmount + ", orderDate='" + orderDate + "', orderStatus='" + orderStatus + "'}";
+        return "Order{id=" + id + ", userId=" + userId + ", status='" + status + "', totalAmount=" + totalAmount + ", orderDate='" + orderDate + "'}";
     }
 }

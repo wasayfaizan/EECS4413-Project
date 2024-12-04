@@ -1,4 +1,4 @@
-package model;
+package com.example.solemate.model;
 
 public class Payment {
     private int id;
