@@ -1,71 +1,65 @@
-package models;
-
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+package model;
 
 import java.util.List;
 
-@Document(collection = "carts")
 public class Cart {
-    @Id
-    private String cartId;
-    private String userId; // Reference to the User
-    private List<Item> items; // List of cart items
-    private double totalPrice;
+    private int id;
+    private int userId;
+    private List<Product> products;
 
-    // Nested Item Class
-    public static class Item {
-        private String productId; // Reference to the Product
-        private int quantity;
+    // Default constructor
+    public Cart() {}
 
-        // Getters and Setters
-        public String getProductId() {
-            return productId;
-        }
-
-        public void setProductId(String productId) {
-            this.productId = productId;
-        }
-
-        public int getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
+    // Parameterized constructor
+    public Cart(int id, int userId, List<Product> products) {
+        this.id = id;
+        this.userId = userId;
+        this.products = products;
     }
 
-    // Getters and Setters for Cart
-    public String getCartId() {
-        return cartId;
+    // Getters and Setters
+    public int getId() {
+        return id;
     }
 
-    public void setCartId(String cartId) {
-        this.cartId = cartId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public List<Item> getItems() {
-        return items;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public void setItems(List<Item> items) {
-        this.items = items;
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
     }
 
     public double getTotalPrice() {
-        return totalPrice;
+        double total = 0;
+        for (Product product : products) {
+            total += product.getPrice();
+        }
+        return total;
     }
 
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
+    @Override
+    public String toString() {
+        return "Cart{id=" + id + ", userId=" + userId + ", products=" + products + "}";
     }
 }

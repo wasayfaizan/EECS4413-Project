@@ -1,93 +1,43 @@
-package models;
+package model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
-
-@Document(collection = "users")
 public class User {
-    @Id
-    private String userId;
-    private String name;
-    private String email;
+    private int id;
+    private String username;
     private String password;
-    private Address address;
+    private String email;
+    private String fullName;
+    private String address;
     private String phoneNumber;
 
-    // Nested Address Class
-    public static class Address {
-        private String street;
-        private String city;
-        private String state;
-        private String zip;
-        private String country;
+    // Default constructor
+    public User() {}
 
-        // Getters and Setters for Address
-        public String getStreet() {
-            return street;
-        }
-
-        public void setStreet(String street) {
-            this.street = street;
-        }
-
-        public String getCity() {
-            return city;
-        }
-
-        public void setCity(String city) {
-            this.city = city;
-        }
-
-        public String getState() {
-            return state;
-        }
-
-        public void setState(String state) {
-            this.state = state;
-        }
-
-        public String getZip() {
-            return zip;
-        }
-
-        public void setZip(String zip) {
-            this.zip = zip;
-        }
-
-        public String getCountry() {
-            return country;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
-        }
-    }
-
-    // Getters and Setters for User
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    // Parameterized constructor
+    public User(int id, String username, String password, String email, String fullName, String address, String phoneNumber) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
         this.email = email;
+        this.fullName = fullName;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -98,11 +48,27 @@ public class User {
         this.password = password;
     }
 
-    public Address getAddress() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(String address) {
         this.address = address;
     }
 
@@ -114,5 +80,8 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-  
+    @Override
+    public String toString() {
+        return "User{id=" + id + ", username='" + username + "', fullName='" + fullName + "', email='" + email + "'}";
+    }
 }

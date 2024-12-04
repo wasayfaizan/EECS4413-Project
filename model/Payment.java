@@ -1,52 +1,39 @@
-package models;
+package model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Date;
-
-@Document(collection = "payments")
 public class Payment {
-    @Id
-    private String paymentId;
-    private String userId; // Reference to the User
-    private String orderId; // Reference to the Order
-    private String paymentMethod; // e.g., "card", "paypal"
+    private int id;
+    private int orderId;
     private double amount;
-    private String status; // "successful", "failed"
-    private Date transactionDate;
+    private String paymentMethod;  // E.g., Credit Card, PayPal, etc.
+    private String paymentStatus;  // E.g., Pending, Completed, Failed
 
-    // Getters and Setters for Payment
-    public String getPaymentId() {
-        return paymentId;
+    // Default constructor
+    public Payment() {}
+
+    // Parameterized constructor
+    public Payment(int id, int orderId, double amount, String paymentMethod, String paymentStatus) {
+        this.id = id;
+        this.orderId = orderId;
+        this.amount = amount;
+        this.paymentMethod = paymentMethod;
+        this.paymentStatus = paymentStatus;
     }
 
-    public void setPaymentId(String paymentId) {
-        this.paymentId = paymentId;
+    // Getters and Setters
+    public int getId() {
+        return id;
     }
 
-    public String getUserId() {
-        return userId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getOrderId() {
+    public int getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(String orderId) {
+    public void setOrderId(int orderId) {
         this.orderId = orderId;
-    }
-
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
     }
 
     public double getAmount() {
@@ -57,19 +44,24 @@ public class Payment {
         this.amount = amount;
     }
 
-    public String getStatus() {
-        return status;
+    public String getPaymentMethod() {
+        return paymentMethod;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPaymentMethod(String paymentMethod) {
+        this.paymentMethod = paymentMethod;
     }
 
-    public Date getTransactionDate() {
-        return transactionDate;
+    public String getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setTransactionDate(Date transactionDate) {
-        this.transactionDate = transactionDate;
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "Payment{id=" + id + ", orderId=" + orderId + ", amount=" + amount + ", paymentMethod='" + paymentMethod + "', paymentStatus='" + paymentStatus + "'}";
     }
 }

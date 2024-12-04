@@ -1,63 +1,33 @@
-package models;
+package model;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.List;
-
-@Document(collection = "products")
 public class Product {
-    @Id
-    private String productId;
+    private int id;
     private String name;
-    private String brand;
-    private double price;
-    private String category; // e.g., "men", "women"
-    private int stock;
     private String description;
-    private List<String> images; // URLs of product images
-    private double rating; // Average rating
-    private List<Review> reviews; // List of reviews
+    private double price;
+    private int brandId;
+    private String imageUrl;
 
-    // Nested Review Class
-    public static class Review {
-        private String userId;
-        private String comment;
-        private int rating;
+    // Default constructor
+    public Product() {}
 
-        // Getters and Setters for Review
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getComment() {
-            return comment;
-        }
-
-        public void setComment(String comment) {
-            this.comment = comment;
-        }
-
-        public int getRating() {
-            return rating;
-        }
-
-        public void setRating(int rating) {
-            this.rating = rating;
-        }
+    // Parameterized constructor
+    public Product(int id, String name, String description, double price, int brandId, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.brandId = brandId;
+        this.imageUrl = imageUrl;
     }
 
-    // Getters and Setters for Product
-    public String getProductId() {
-        return productId;
+    // Getters and Setters
+    public int getId() {
+        return id;
     }
 
-    public void setProductId(String productId) {
-        this.productId = productId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -68,12 +38,12 @@ public class Product {
         this.name = name;
     }
 
-    public String getBrand() {
-        return brand;
+    public String getDescription() {
+        return description;
     }
 
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getPrice() {
@@ -84,51 +54,26 @@ public class Product {
         this.price = price;
     }
 
-    public String getCategory() {
-        return category;
+    public int getBrandId() {
+        return brandId;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setBrandId(int brandId) {
+        this.brandId = brandId;
     }
 
-    public int getStock() {
-        return stock;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setStock(int stock) {
-        this.stock = stock;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<String> getImages() {
-        return images;
-    }
-
-    public void setImages(List<String> images) {
-        this.images = images;
-    }
-
-    public double getRating() {
-        return rating;
-    }
-
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
-
-    public List<Review> getReviews() {
-        return reviews;
-    }
-
-    public void setReviews(List<Review> reviews) {
-        this.reviews = reviews;
+    // Override toString() method for better debugging
+    @Override
+    public String toString() {
+        return "Product{id=" + id + ", name='" + name + "', description='" + description + "', price=" + price
+                + ", brandId=" + brandId + ", imageUrl='" + imageUrl + "'}";
     }
 }
