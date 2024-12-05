@@ -36,21 +36,29 @@ public class PaymentDaoImpl implements PaymentDAO {
     @Override
     public void addPayment(Payment payment) throws Exception {
         String query = "INSERT INTO payments (order_id, amount, payment_method, payment_status) VALUES (?, ?, ?, ?)";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, payment.getOrderId());
             preparedStatement.setDouble(2, payment.getAmount());
             preparedStatement.setString(3, payment.getPaymentMethod());
             preparedStatement.setString(4, payment.getPaymentStatus());
             preparedStatement.executeUpdate();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 
     @Override
     public Payment getPaymentByOrderId(int orderId) throws Exception {
         String query = "SELECT * FROM payments WHERE order_id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, orderId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -63,6 +71,10 @@ public class PaymentDaoImpl implements PaymentDAO {
                         resultSet.getString("payment_status")
                 );
             }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
         return null;
     }
@@ -70,5 +82,11 @@ public class PaymentDaoImpl implements PaymentDAO {
     @Override
     public void updatePaymentStatus(int id, String status) throws Exception {
         String query = "UPDATE payments SET payment_status = ? WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement =
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, status);
+            preparedStatement.setInt(2, id);
+            preparedStatement.executeUpdate();
+        }
+    }
+}

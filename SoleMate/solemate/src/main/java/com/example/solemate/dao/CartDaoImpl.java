@@ -1,7 +1,7 @@
 package com.example.solemate.dao;
 
-import model.Cart;
-import model.Product;
+import com.example.solemate.model.Cart;
+import com.example.solemate.model.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -43,9 +43,10 @@ public class CartDaoImpl implements CartDAO {
                 "JOIN products p ON cp.product_id = p.id WHERE c.user_id = ?";
         Cart cart = new Cart();
         List<Product> products = new ArrayList<>();
-
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -63,6 +64,10 @@ public class CartDaoImpl implements CartDAO {
                         resultSet.getString("image_url")
                 ));
             }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
 
         cart.setProducts(products);
@@ -72,7 +77,7 @@ public class CartDaoImpl implements CartDAO {
     @Override
     public void addProductToCart(int cartId, int productId) throws Exception {
         String query = "INSERT INTO cart_products (cart_id, product_id) VALUES (?, ?)";
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, cartId);
             preparedStatement.setInt(2, productId);
@@ -83,7 +88,7 @@ public class CartDaoImpl implements CartDAO {
     @Override
     public void removeProductFromCart(int cartId, int productId) throws Exception {
         String query = "DELETE FROM cart_products WHERE cart_id = ? AND product_id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
+        try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, cartId);
             preparedStatement.setInt(2, productId);

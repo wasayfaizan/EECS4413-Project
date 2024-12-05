@@ -17,7 +17,7 @@ public class UserDaoImpl implements UserDAO {
     
     private String dbPath;
 
-    public CartDaoImpl(String dbPath) {
+    public UserDaoImpl(String dbPath) {
         this.dbPath = dbPath;
     }
     
@@ -36,8 +36,10 @@ public class UserDaoImpl implements UserDAO {
     @Override
     public void addUser(User user) throws Exception {
         String query = "INSERT INTO users (username, password, email, full_name, address, phone_number) VALUES (?, ?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getEmail());
@@ -45,14 +47,20 @@ public class UserDaoImpl implements UserDAO {
             preparedStatement.setString(5, user.getAddress());
             preparedStatement.setString(6, user.getPhoneNumber());
             preparedStatement.executeUpdate();
-        }
+        }   catch (SQLException ex) {
+                ex.printStackTrace();
+            } finally {
+                closeConnection(connection);
+            }
     }
 
     @Override
     public User getUserById(int id) throws Exception {
         String query = "SELECT * FROM users WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -67,6 +75,10 @@ public class UserDaoImpl implements UserDAO {
                         resultSet.getString("phone_number")
                 );
             }
+        }   catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
         return null;
     }
@@ -75,9 +87,11 @@ public class UserDaoImpl implements UserDAO {
     public List<User> getAllUsers() throws Exception {
         String query = "SELECT * FROM users";
         List<User> users = new ArrayList<>();
-        try (Connection connection = DatabaseConnection.getConnection();
+        Connection connection = null;
+        try {
+             connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
+             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 users.add(new User(
                         resultSet.getInt("id"),
@@ -89,15 +103,22 @@ public class UserDaoImpl implements UserDAO {
                         resultSet.getString("phone_number")
                 ));
             }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
+        
         return users;
     }
 
     @Override
     public void updateUser(User user) throws Exception {
         String query = "UPDATE users SET username = ?, password = ?, email = ?, full_name = ?, address = ?, phone_number = ? WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getPassword());
             preparedStatement.setString(3, user.getEmail());
@@ -106,16 +127,26 @@ public class UserDaoImpl implements UserDAO {
             preparedStatement.setString(6, user.getPhoneNumber());
             preparedStatement.setInt(7, user.getId());
             preparedStatement.executeUpdate();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 
     @Override
     public void deleteUser(int id) throws Exception {
         String query = "DELETE FROM users WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 }

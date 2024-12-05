@@ -36,22 +36,30 @@ public class ProductDaoImpl implements ProductDAO {
     @Override
     public void addProduct(Product product) throws Exception {
         String query = "INSERT INTO products (name, description, price, brand_id, image_url) VALUES (?, ?, ?, ?, ?)";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setDouble(3, product.getPrice());
             preparedStatement.setInt(4, product.getBrandId());
             preparedStatement.setString(5, product.getImageUrl());
             preparedStatement.executeUpdate();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 
     @Override
     public Product getProductById(int id) throws Exception {
         String query = "SELECT * FROM products WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -65,6 +73,10 @@ public class ProductDaoImpl implements ProductDAO {
                         resultSet.getString("image_url")
                 );
             }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
         return null;
     }
@@ -73,9 +85,11 @@ public class ProductDaoImpl implements ProductDAO {
     public List<Product> getAllProducts() throws Exception {
         List<Product> products = new ArrayList<>();
         String query = "SELECT * FROM products";
-        try (Connection connection = DatabaseConnection.getConnection();
+        Connection connection = null;
+        try{ 
+             connection = getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
+             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
                 products.add(new Product(
                         resultSet.getInt("id"),
@@ -86,6 +100,10 @@ public class ProductDaoImpl implements ProductDAO {
                         resultSet.getString("image_url")
                 ));
             }
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
         return products;
     }
@@ -93,8 +111,10 @@ public class ProductDaoImpl implements ProductDAO {
     @Override
     public void updateProduct(Product product) throws Exception {
         String query = "UPDATE products SET name = ?, description = ?, price = ?, brand_id = ?, image_url = ? WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, product.getName());
             preparedStatement.setString(2, product.getDescription());
             preparedStatement.setDouble(3, product.getPrice());
@@ -102,16 +122,26 @@ public class ProductDaoImpl implements ProductDAO {
             preparedStatement.setString(5, product.getImageUrl());
             preparedStatement.setInt(6, product.getId());
             preparedStatement.executeUpdate();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 
     @Override
     public void deleteProduct(int id) throws Exception {
         String query = "DELETE FROM products WHERE id = ?";
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
+        }catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
         }
     }
 }
