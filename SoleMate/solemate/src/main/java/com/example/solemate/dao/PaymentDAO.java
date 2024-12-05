@@ -1,5 +1,5 @@
-package dao;
-import model.Payment;
+package com.example.solemate.dao;
+import com.example.solemate.model.Payment;
 
 public interface PaymentDAO {
     void addPayment(Payment payment) throws Exception;

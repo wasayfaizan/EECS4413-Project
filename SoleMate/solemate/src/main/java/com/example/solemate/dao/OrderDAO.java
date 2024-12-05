@@ -1,4 +1,4 @@
-package dao;
+package com.example.solemate.dao;
 
 import model.Order;
 import java.util.List;

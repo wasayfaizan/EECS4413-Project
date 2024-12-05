@@ -1,5 +1,5 @@
-package dao;
-import model.Order;
+package com.example.solemate.dao;
+import com.example.solemate.model.Order;
 
 import java.sql.*;
 import java.util.ArrayList;

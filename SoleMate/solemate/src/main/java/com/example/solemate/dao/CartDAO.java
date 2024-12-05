@@ -1,4 +1,4 @@
-package dao;
+package com.example.solemate.dao;
 
 import model.Cart;
 

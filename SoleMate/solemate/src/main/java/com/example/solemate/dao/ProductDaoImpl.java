@@ -1,5 +1,5 @@
-package dao;
-import model.Product;
+package com.example.solemate.dao;
+import com.example.solemate.model.Product;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;

@@ -1,6 +1,6 @@
-package dao;
+package com.example.solemate.dao;
 
-import model.Payment;
+import com.example.solemate.model.Payment;
 
 import java.sql.*;
 
