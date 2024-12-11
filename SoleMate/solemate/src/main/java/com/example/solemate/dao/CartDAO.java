@@ -1,6 +1,6 @@
 package com.example.solemate.dao;
 
-import model.Cart;
+import com.example.solemate.model.Cart;
 
 public interface CartDAO {
     Cart getCartByUserId(int userId) throws Exception;

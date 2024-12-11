@@ -1,6 +1,6 @@
 package com.example.solemate.dao;
 
-import model.Order;
+import com.example.solemate.model.Order;
 import java.util.List;
 
 public interface OrderDAO {
