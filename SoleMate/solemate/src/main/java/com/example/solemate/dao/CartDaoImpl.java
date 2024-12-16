@@ -95,4 +95,48 @@ public class CartDaoImpl implements CartDAO {
             preparedStatement.executeUpdate();
         }
     }
+
+    @Override
+    public void createCart(Cart cart) {
+        String query = "INSERT INTO carts (user_id) VALUES (?)";
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, cart.getUserId());
+            preparedStatement.executeUpdate();
+
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                cart.setId(generatedKeys.getInt(1)); // Set the generated cart ID to the cart object
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+    }
+
+    @Override
+    public void deleteCart(int cartId) throws Exception {
+        String deleteCartProductsQuery = "DELETE FROM cart_products WHERE cart_id = ?";
+        String deleteCartQuery = "DELETE FROM carts WHERE id = ?";
+        Connection connection = null;
+        try {
+            connection = getConnection();
+            // Delete all products related to the cart
+            PreparedStatement productStatement = connection.prepareStatement(deleteCartProductsQuery);
+            productStatement.setInt(1, cartId);
+            productStatement.executeUpdate();
+
+            // Delete the cart itself
+            PreparedStatement cartStatement = connection.prepareStatement(deleteCartQuery);
+            cartStatement.setInt(1, cartId);
+            cartStatement.executeUpdate();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+    }
 }

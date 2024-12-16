@@ -13,4 +13,8 @@ public interface OrderDAO {
     void updateOrderStatus(int id, String status) throws Exception;
 
     void deleteOrder(int id) throws Exception;
+
+    List<Order> getAllOrders();
+
+    void updateOrder(Order order);
 }

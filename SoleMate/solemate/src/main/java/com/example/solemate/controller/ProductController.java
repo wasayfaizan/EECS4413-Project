@@ -1,6 +1,8 @@
 package com.example.solemate.controller;
 
+import com.example.solemate.dao.ProductDAO;
 import com.example.solemate.model.Product;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,47 +11,41 @@ import java.util.List;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private List<Product> products = new ArrayList<>(); // Temporary in-memory storage
+
+    @Autowired
+    private ProductDAO productDAO;
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return products;
+    public List<Product> getAllProducts() throws Exception {
+
+        return productDAO.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable int id) {
-        return products.stream()
-                .filter(product -> product.getId() == id)
-                .findFirst()
-                .orElse(null);
+    public Product getProductById(@PathVariable int id) throws Exception {
+        return productDAO.getProductById(id);
     }
 
     @PostMapping
-    public String addProduct(@RequestBody Product product) {
-        products.add(product);
-        return "Product added successfully!";
+    public Product addProduct(@RequestBody Product product) throws Exception {
+        productDAO.addProduct(product);
+        return product;
     }
 
     @PutMapping("/{id}")
-    public String updateProduct(@PathVariable int id, @RequestBody Product updatedProduct) {
-        Product product = products.stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElse(null);
-        if (product != null) {
-            product.setName(updatedProduct.getName());
-            product.setDescription(updatedProduct.getDescription());
-            product.setPrice(updatedProduct.getPrice());
-            product.setBrandId(updatedProduct.getBrandId());
-            product.setImageUrl(updatedProduct.getImageUrl());
-            return "Product updated successfully!";
-        }
-        return "Product not found!";
+    public Product updateProduct(@PathVariable int id, @RequestBody Product productDetails) throws Exception {
+        Product product = productDAO.getProductById(id);
+        product.setName(productDetails.getName());
+        product.setDescription(productDetails.getDescription());
+        product.setPrice(productDetails.getPrice());
+        product.setImageUrl(productDetails.getImageUrl());
+        productDAO.updateProduct(product);
+        return product;
     }
 
     @DeleteMapping("/{id}")
-    public String deleteProduct(@PathVariable int id) {
-        products.removeIf(product -> product.getId() == id);
+    public String deleteProduct(@PathVariable int id) throws Exception {
+        productDAO.deleteProduct(id);
         return "Product deleted successfully!";
     }
 }

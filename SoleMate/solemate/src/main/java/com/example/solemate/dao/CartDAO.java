@@ -8,4 +8,9 @@ public interface CartDAO {
     void addProductToCart(int cartId, int productId) throws Exception;
 
     void removeProductFromCart(int cartId, int productId) throws Exception;
+
+    void createCart(Cart cart);
+
+    void deleteCart(int cartId) throws Exception;
+
 }

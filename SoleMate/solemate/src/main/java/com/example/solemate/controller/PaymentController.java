@@ -1,6 +1,8 @@
 package com.example.solemate.controller;
 
+import com.example.solemate.dao.PaymentDAO;
 import com.example.solemate.model.Payment;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -9,57 +11,81 @@ import java.util.List;
 @RestController
 @RequestMapping("/payments")
 public class PaymentController {
-    private List<Payment> payments = new ArrayList<>(); // Temporary in-memory storage
+
+    @Autowired
+    private PaymentDAO paymentDAO;
+
 
     @GetMapping("/{id}")
     public Payment getPaymentById(@PathVariable int id) {
-        return payments.stream()
-                .filter(payment -> payment.getId() == id)
-                .findFirst()
-                .orElse(null);
-    }
-
-    @GetMapping("/by-order/{orderId}")
-    public List<Payment> getPaymentsByOrderId(@PathVariable int orderId) {
-        List<Payment> results = new ArrayList<>();
-        for (Payment payment : payments) {
-            if (payment.getOrderId() == orderId) {
-                results.add(payment);
-            }
+        try {
+            return paymentDAO.getPaymentById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return results;
     }
 
 
     @GetMapping
     public List<Payment> getAllPayments() {
-        return payments;
+        try {
+            return paymentDAO.getAllPayments();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @PostMapping
     public String createPayment(@RequestBody Payment payment) {
-        payments.add(payment);
-        return "Payment created successfully!";
+        try {
+            paymentDAO.addPayment(payment);
+            return "Payment created successfully!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error creating payment: " + e.getMessage();
+        }
     }
 
     @PutMapping("/{id}")
     public String updatePayment(@PathVariable int id, @RequestBody Payment updatedPayment) {
-        Payment payment = payments.stream()
-                .filter(p -> p.getId() == id)
-                .findFirst()
-                .orElse(null);
-        if (payment != null) {
-            payment.setAmount(updatedPayment.getAmount());
-            payment.setPaymentMethod(updatedPayment.getPaymentMethod());
-            payment.setPaymentStatus(updatedPayment.getPaymentStatus());
-            return "Payment updated successfully!";
+        try {
+            Payment payment = paymentDAO.getPaymentById(id);
+            if (payment != null) {
+                payment.setAmount(updatedPayment.getAmount());
+                payment.setPaymentMethod(updatedPayment.getPaymentMethod());
+                payment.setPaymentStatus(updatedPayment.getPaymentStatus());
+                paymentDAO.updatePayment(payment);
+                return "Payment updated successfully!";
+            }
+            return "Payment not found!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error updating payment: " + e.getMessage();
         }
-        return "Payment not found!";
     }
+
+    @PutMapping("/{id}/status")
+    public String updatePaymentStatus(@PathVariable int id, @RequestParam String status) {
+        try {
+            paymentDAO.updatePaymentStatus(id, status);
+            return "Payment status updated successfully!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error updating payment status: " + e.getMessage();
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public String deletePayment(@PathVariable int id) {
-        boolean removed = payments.removeIf(payment -> payment.getId() == id);
-        return removed ? "Payment deleted successfully!" : "Payment not found!";
+        try {
+            paymentDAO.deletePayment(id);
+            return "Payment deleted successfully!";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error deleting payment: " + e.getMessage();
+        }
     }
 }
