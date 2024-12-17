@@ -1,5 +1,6 @@
 package com.example.solemate.dao;
 import com.example.solemate.model.Product;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -17,16 +18,17 @@ public class ProductDaoImpl implements ProductDAO {
             ex.printStackTrace();
         }
     }
-    
+
+    @Value("${spring.datasource.url}")
     private String dbPath;
 
 
-    public ProductDaoImpl(String dbPath) {
-        this.dbPath = dbPath;
-    }
+//    public ProductDaoImpl(String dbPath) {
+//        this.dbPath = dbPath;
+//    }
     
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        return DriverManager.getConnection(dbPath);
     }
 
     private void closeConnection(Connection connection) {

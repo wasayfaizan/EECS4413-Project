@@ -1,6 +1,7 @@
 package com.example.solemate.dao;
 
 import com.example.solemate.model.Order;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -18,14 +19,15 @@ public class OrderDaoImpl implements OrderDAO {
         }
     }
 
-    private final String dbPath;
+    @Value("${spring.datasource.url}")
+    private String dbPath;
 
-    public OrderDaoImpl(String dbPath) {
-        this.dbPath = dbPath;
-    }
+//    public OrderDaoImpl(String dbPath) {
+//        this.dbPath = dbPath;
+//    }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        return DriverManager.getConnection(dbPath);
     }
 
     @Override

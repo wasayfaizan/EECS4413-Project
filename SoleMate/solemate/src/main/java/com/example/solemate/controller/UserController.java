@@ -1,6 +1,7 @@
 package com.example.solemate.controller;
 
 import com.example.solemate.dao.UserDAO;
+import com.example.solemate.dao.UserDaoImpl;
 import com.example.solemate.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    private UserDAO userDAO;
+    private UserDaoImpl userDAO;
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable int id) {

@@ -1,6 +1,7 @@
 package com.example.solemate.controller;
 
 import com.example.solemate.dao.OrderDAO;
+import com.example.solemate.dao.OrderDaoImpl;
 import com.example.solemate.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    private OrderDAO orderDAO;
+    private OrderDaoImpl orderDAO;
 
     // Get all orders
     @GetMapping

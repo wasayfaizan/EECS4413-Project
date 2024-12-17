@@ -14,12 +14,8 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    private ProductDAO productDAO;
-
     @Autowired
-    public ProductController(@Value("${db.path}") String dbPath) {
-        this.productDAO = new ProductDaoImpl(dbPath);
-    }
+    private ProductDaoImpl productDAO;
 
 
 
@@ -55,5 +51,15 @@ public class ProductController {
     public String deleteProduct(@PathVariable int id) throws Exception {
         productDAO.deleteProduct(id);
         return "Product deleted successfully!";
+    }
+
+    @GetMapping("/testConnection")
+    public String testDatabaseConnection() {
+        try {
+            List<Product> products = productDAO.getAllProducts();
+            return "Connection successful! Number of products: " + products.size();
+        } catch (Exception e) {
+            return "Failed to connect to database: " + e.getMessage();
+        }
     }
 }

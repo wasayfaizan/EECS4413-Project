@@ -2,6 +2,7 @@ package com.example.solemate.dao;
 
 import com.example.solemate.model.Cart;
 import com.example.solemate.model.Product;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -16,15 +17,16 @@ public class CartDaoImpl implements CartDAO {
             ex.printStackTrace();
         }
     }
-    
+
+    @Value("${spring.datasource.url}")
     private String dbPath;
 
-    public CartDaoImpl(String dbPath) {
-        this.dbPath = dbPath;
-    }
+//    public CartDaoImpl(String dbPath) {
+//        this.dbPath = dbPath;
+//    }
     
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        return DriverManager.getConnection(dbPath);
     }
 
     private void closeConnection(Connection connection) {

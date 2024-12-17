@@ -1,6 +1,7 @@
 package com.example.solemate.controller;
 
 import com.example.solemate.dao.PaymentDAO;
+import com.example.solemate.dao.PaymentDaoImpl;
 import com.example.solemate.model.Payment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +14,7 @@ import java.util.List;
 public class PaymentController {
 
     @Autowired
-    private PaymentDAO paymentDAO;
+    private PaymentDaoImpl paymentDAO;
 
 
     @GetMapping("/{id}")

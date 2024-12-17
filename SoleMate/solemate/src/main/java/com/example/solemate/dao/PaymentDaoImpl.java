@@ -1,6 +1,7 @@
 package com.example.solemate.dao;
 
 import com.example.solemate.model.Payment;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,15 +16,16 @@ public class PaymentDaoImpl implements PaymentDAO {
             ex.printStackTrace();
         }
     }
-    
+
+    @Value("${spring.datasource.url}")
     private String dbPath;
 
-    public PaymentDaoImpl(String dbPath) {
-        this.dbPath = dbPath;
-    }
+//    public PaymentDaoImpl(String dbPath) {
+//        this.dbPath = dbPath;
+//    }
     
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        return DriverManager.getConnection(dbPath);
     }
 
     private void closeConnection(Connection connection) {

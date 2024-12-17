@@ -1,6 +1,6 @@
 package com.example.solemate.controller;
 
-import com.example.solemate.dao.CartDAO;
+import com.example.solemate.dao.CartDaoImpl;
 import com.example.solemate.model.Cart;
 import com.example.solemate.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import java.util.List;
 public class CartController {
 
     @Autowired
-    private CartDAO cartDAO;
+    private CartDaoImpl cartDAO;
 
     @GetMapping("/{userId}")
     public Cart getCartByUserId(@PathVariable int userId) {

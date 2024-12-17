@@ -1,5 +1,6 @@
 package com.example.solemate.dao;
 import com.example.solemate.model.User;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,15 +15,16 @@ public class UserDaoImpl implements UserDAO {
             ex.printStackTrace();
         }
     }
-    
+
+    @Value("${spring.datasource.url}")
     private String dbPath;
 
-    public UserDaoImpl(String dbPath) {
-        this.dbPath = dbPath;
-    }
+//    public UserDaoImpl(String dbPath) {
+//        this.dbPath = dbPath;
+//    }
     
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:sqlite:" + dbPath);
+        return DriverManager.getConnection(dbPath);
     }
 
     private void closeConnection(Connection connection) {
