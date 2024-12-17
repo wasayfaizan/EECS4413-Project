@@ -1,9 +1,12 @@
 package com.example.solemate.dao;
 import com.example.solemate.model.Product;
+import org.springframework.stereotype.Repository;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ProductDaoImpl implements ProductDAO {
 
 
@@ -16,6 +19,7 @@ public class ProductDaoImpl implements ProductDAO {
     }
     
     private String dbPath;
+
 
     public ProductDaoImpl(String dbPath) {
         this.dbPath = dbPath;
@@ -35,7 +39,7 @@ public class ProductDaoImpl implements ProductDAO {
     }
     @Override
     public void addProduct(Product product) throws Exception {
-        String query = "INSERT INTO products (name, description, price, brand_id, image_url) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Products (name, description, price, brand_id, image_url) VALUES (?, ?, ?, ?, ?)";
         Connection connection = null;
         try {
             connection = getConnection();
@@ -55,7 +59,7 @@ public class ProductDaoImpl implements ProductDAO {
 
     @Override
     public Product getProductById(int id) throws Exception {
-        String query = "SELECT * FROM products WHERE id = ?";
+        String query = "SELECT * FROM Products WHERE id = ?";
         Connection connection = null;
         try {
             connection = getConnection();
@@ -84,7 +88,7 @@ public class ProductDaoImpl implements ProductDAO {
     @Override
     public List<Product> getAllProducts() throws Exception {
         List<Product> products = new ArrayList<>();
-        String query = "SELECT * FROM products";
+        String query = "SELECT * FROM Products";
         Connection connection = null;
         try{ 
              connection = getConnection();
@@ -110,7 +114,7 @@ public class ProductDaoImpl implements ProductDAO {
 
     @Override
     public void updateProduct(Product product) throws Exception {
-        String query = "UPDATE products SET name = ?, description = ?, price = ?, brand_id = ?, image_url = ? WHERE id = ?";
+        String query = "UPDATE Products SET name = ?, description = ?, price = ?, brand_id = ?, image_url = ? WHERE id = ?";
         Connection connection = null;
         try {
             connection = getConnection();
@@ -131,7 +135,7 @@ public class ProductDaoImpl implements ProductDAO {
 
     @Override
     public void deleteProduct(int id) throws Exception {
-        String query = "DELETE FROM products WHERE id = ?";
+        String query = "DELETE FROM Products WHERE id = ?";
         Connection connection = null;
         try {
             connection = getConnection();

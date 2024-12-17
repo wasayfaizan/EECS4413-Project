@@ -1,8 +1,10 @@
 package com.example.solemate.controller;
 
 import com.example.solemate.dao.ProductDAO;
+import com.example.solemate.dao.ProductDaoImpl;
 import com.example.solemate.model.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -12,8 +14,14 @@ import java.util.List;
 @RequestMapping("/products")
 public class ProductController {
 
-    @Autowired
     private ProductDAO productDAO;
+
+    @Autowired
+    public ProductController(@Value("${db.path}") String dbPath) {
+        this.productDAO = new ProductDaoImpl(dbPath);
+    }
+
+
 
     @GetMapping
     public List<Product> getAllProducts() throws Exception {
