@@ -1,8 +1,8 @@
 # SoleMate E-commerce Store
 
 ## Team Members
-David, Yusuf, 218914879
-Abdul Wasay Faizan, 218513788
+David, Yusuf, 218914879__
+Abdul Wasay Faizan, 218513788__
 Shaiyan Azim 216308991
 
 
